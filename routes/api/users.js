@@ -25,6 +25,7 @@ router.post('/register', (req, res) => {
     const newUser = new User({
       name: req.body.name,
       email: req.body.email,
+      identifier: req.body.identifier,
       password: req.body.password
     });
 
@@ -45,16 +46,17 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
 
-const { errors, isValid } = validateLoginInput(req.body);
+  const { errors, isValid } = validateLoginInput(req.body);
 
   if (!isValid) {
     return res.status(400).json(errors);
   }
   
-  const email = req.body.email;
+  //const email = req.body.email;
+  const identifier = req.body.identifier;
   const password = req.body.password;
 
-  User.findOne({ email }).then(user => {
+  User.findOne({ identifier }).then(user => {
     
     if (!user) {
       return res.status(404).json({ emailnotfound: "Email not found" });
